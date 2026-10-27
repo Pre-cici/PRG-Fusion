@@ -1,0 +1,3 @@
+# Keep small README assets as regular Git objects for reliable rendering.
+*.gif -filter -diff -merge binary
+*.png -filter -diff -merge binary

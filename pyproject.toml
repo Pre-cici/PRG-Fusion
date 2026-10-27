@@ -1,0 +1,125 @@
+# SPDX-FileCopyrightText: Copyright (c) 2025 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+# SPDX-License-Identifier: Apache-2.0
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "prg-fusion"
+dynamic = ["version"]
+authors = [
+    {name = "Sipeng He"},
+    {name = "Jialei Chen"},
+    {name = "Zhen Fang"},
+    {name = "Dongchun Ren"},
+    {name = "Feng Zhao"},
+]
+description = "PRG-Fusion driving view synthesis built on Cosmos-Transfer2.5"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "Apache-2.0"}
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Environment :: GPU :: NVIDIA CUDA",
+  "Intended Audience :: Science/Research",
+  "License :: OSI Approved :: Apache Software License",
+  "Operating System :: POSIX :: Linux",
+  "Programming Language :: Python",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = [
+  "cosmos-oss==0.1.0",
+  "cattrs>=25.2.0",
+  "easydict>=1.9",
+  "moderngl>=5.11.1",
+  "natsort>=8.4.0",
+  "OpenEXR>=3.3.1",
+  "pyarrow>=21.0.0",
+  "sam2>=1.1.0",
+  "shapely>=2.0.5",
+  "video-depth-anything @ git+https://github.com/jeanachoi/Video-Depth-Anything.git",
+  "nvitop>=1.7.0",
+]
+
+[project.optional-dependencies]
+cu128 = ["cosmos-oss[cu128_torch27]"]
+cu130 = ["cosmos-oss[cu130_torch29]"]
+
+[dependency-groups]
+dev = [
+    "cosmos-oss[dev]",
+    "debugpy>=1.8.20",
+]
+
+[project.urls]
+documentation = "https://github.com/Pre-cici/PRG-Fusion/blob/main/README.md"
+homepage = "https://pre-cici.github.io/PRG-Fusion/"
+issues = "https://github.com/Pre-cici/PRG-Fusion/issues"
+repository = "https://github.com/Pre-cici/PRG-Fusion"
+
+[tool.pyright]
+typeCheckingMode = "basic"
+pythonVersion = "3.13"
+useLibraryCodeForTypes = true
+
+reportMissingImports = "error"
+reportUndefinedVariable = "error"
+reportGeneralTypeIssues = "error"
+
+reportPrivateImportUsage = "none"
+reportMissingTypeStubs = "none"
+reportUnknownMemberType = "none"
+reportUnknownArgumentType = "none"
+reportUnknownVariableType = "none"
+reportUnknownLambdaType = "none"
+reportUnknownParameterType = "none"
+reportCallIssue = "warning"
+reportIndexIssue = "warning"
+reportOperatorIssue = "warning"
+
+[tool.uv]
+conflicts = [
+  [{extra = "cu128"}, {extra = "cu130"}],
+]
+override-dependencies = ["numpy>=2.0.0", "nvidia-cudnn-cu13>=9.15.0"]
+
+[tool.uv.workspace]
+members = ["packages/*"]
+
+[tool.uv.sources]
+cosmos-oss = [{ workspace = true }]
+video-depth-anything = { git = "https://github.com/jeanachoi/Video-Depth-Anything.git" }
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.version]
+path = "cosmos_transfer2/__about__.py"
+
+[tool.hatch.build.targets.sdist]
+packages = [
+  "cosmos_transfer2",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = [
+  "cosmos_transfer2",
+]
+exclude = [
+  "*_test.py",
+]
+[tool.basedpyright]
+typeCheckingMode = "standard"

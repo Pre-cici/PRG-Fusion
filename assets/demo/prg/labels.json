@@ -1,0 +1,12 @@
+{
+  "format": "png_uint8",
+  "frames": 93,
+  "frame_pattern": "%06d.png",
+  "class_ids": {
+    "0": "preserve",
+    "1": "repair",
+    "2": "generate"
+  },
+  "height": 640,
+  "width": 960
+}
